@@ -13,18 +13,37 @@
 <body>
     <header>
             {% if current_user.is_authenticated %}
-                <div style="margin-left: 75%;">
+                <div style="margin:0px 70px 0px 0px; float: right;">
                     <a class="cent" style="width: 80px; font-size:30px;">{{ current_user.nickname }}</a>
                     <a class="btn btn-danger" href="/logout">Выйти</a>
                 </div>
             {% else %}
                 <p>
-                    <div style="margin-left: 75%;">
-                        <a class="btn btn-primary" href="/register">Зарегистрироваться</a>
-                        <a class="btn btn-success" href="/login">Войти</a>
+                    <div>
+                        <img style="margin:0px 0px 0px 70px; float: left;" src="static/images/logo.jpg" width="85" height="100" alt="Логотип">
+                        <a style="margin:10px 70px 0px 0px; float: right;" class="btn btn-primary" href="/register">Зарегистрироваться</a>
+                        <a style=" margin:10px 5px 0px 0px; float: right;" class="btn btn-success" href="/login">Войти</a>
+                        <h6>
+                            <img style="margin:10px 0px 0px 50px;" src="static/images/telephone.jpg" width="30" height="30" alt="Телефон">
+                            +7 912 599 69 54</h6>
+                        <h6>
+                            <img style="margin:10px 0px 0px 50px;" src="static/images/mail.jpg" width="30" height="30" alt="Почта">
+                            guided-tour-perm@mail.ru
+                        </h6>
                     </div>
                 </p>
             {% endif %}
+            <div>
+                <img style="margin:0px 0px 0px 70px; float: left;" src="static/images/logo.jpg" width="85" height="100" alt="Логотип">
+                <h6>
+                    <img style="margin:10px 0px 0px 50px;" src="static/images/telephone.jpg" width="30" height="30" alt="Телефон">
+                    +7 912 599 69 54</h6>
+                <h6>
+                    <img style="margin:10px 0px 0px 50px;" src="static/images/mail.jpg" width="30" height="30" alt="Почта">
+                    guided-tour-perm@mail.ru
+                </h6>
+            </div>
     </header>
+
 </body>
 </html>
