@@ -4,4 +4,24 @@
     height: 400px;
     display: block;
     margin: 0 auto;
+
+}
+.img_cont{
+    font-family: Arial;
+    color: #C1A944;
+    font-size: 34pt;
+    vertical-align:middle;
+    text-align:center;
+    width: 1350px;
+    height: 400px;
+    position:relative;
+    display: block;
+    margin: 0 auto;
+    padding-top:170px;
+}
+.img_cont img{
+    position:absolute;
+    z-index:-1;
+    left:0;
+    top:0;
 }
