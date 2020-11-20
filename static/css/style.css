@@ -25,3 +25,27 @@
     left:0;
     top:0;
 }
+
+.sight
+{
+    width: 512px;
+    height: 290px;
+}
+
+
+.sight_caption {
+    background: #d9dabb;
+    display: block;
+
+    float: left;
+    margin: 0 40px 50px 0;
+    text-align: left;
+}
+.sight_caption img
+{
+    border: 2px solid #8b8e4b;
+}
+.sight_caption p
+{
+    margin-bottom: 0;
+}
