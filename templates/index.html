@@ -7,38 +7,46 @@
           href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
           crossorigin="anonymous">
-    <link rel="stylesheet" href="style.css" type="text/css"/>
+    <link href="static/css/style.css" rel="stylesheet" type="text/css">
     <title>Гид-экскурсия</title>
 </head>
 <body>
     <header>
-            {% if current_user.is_authenticated %}
-                <div style="margin:0px 70px 0px 0px; float: right;">
-                    <a class="cent" style="width: 80px; font-size:30px;">{{ current_user.nickname }}</a>
-                    <a class="btn btn-danger" href="/logout">Выйти</a>
+        {% if current_user.is_authenticated %}
+            <div style="margin:0px 300px 0px 0px; float: right;">
+                <a class="cent" style="width: 80px; font-size:30px;">{{ current_user.nickname }}</a>
+                <a class="btn btn-danger" href="/logout">Выйти</a>
+            </div>
+        {% else %}
+            <p>
+                <div>
+                    <a style="margin:10px 300px 0px 0px; float: right;" class="btn btn-primary" href="/register">Зарегистрироваться</a>
+                    <a style=" margin:10px 5px 0px 0px; float: right;" class="btn btn-success" href="/login">Войти</a>
                 </div>
-            {% else %}
-                <p>
-                    <div>
-                        <a style="margin:10px 70px 0px 0px; float: right;" class="btn btn-primary" href="/register">Зарегистрироваться</a>
-                        <a style=" margin:10px 5px 0px 0px; float: right;" class="btn btn-success" href="/login">Войти</a>
-                    </div>
-                </p>
-            {% endif %}
+
+            </p>
+        {% endif %}
+        <div>
             <div>
-                <img style="margin:0px 0px 0px 70px; float: left;" src="static/images/logo.jpg" width="85" height="100" alt="Логотип">
-                <h6>
-                    <img style="margin:10px 0px 0px 50px;" src="static/images/telephone.jpg" width="30" height="30" alt="Телефон">
-                    +7 912 599 69 54</h6>
-                <h6>
-                    <img style="margin:10px 0px 0px 50px;" src="static/images/mail.jpg" width="30" height="30" alt="Почта">
-                    guided-tour-perm@mail.ru
-                </h6>
+                <img style="margin:0px 0px 0px 270px; float: left;" src="static/images/logo.jpg" width="85" height="85" alt="Логотип">
+                <h4 style="margin:10px 0px 0px 0px; float: left;"><font face="Arial">PERMTUR</font></h4>
+                <div>
+
+                    <h6>
+                        <img style="margin:10px 0px 0px 30px;" src="static/images/telephone.jpg" width="30" height="30" alt="Телефон">
+                        +7 912 599 69 54</h6>
+                    <h6>
+                        <img style="margin:10px 0px 0px 150px;" src="static/images/mail.jpg" width="30" height="30" alt="Почта">
+                        permtur@mail.ru
+                    </h6>
+                </div>
             </div>
-            <div>
-                <img style="margin:0px 0px 0px 0px;" src="static/images/main.jpg" width="1900" height="240" alt="main">
-            </div>
+
+        </div>
     </header>
+
+    <img src="static/images/main.jpg" alt="main" class="main_image">
+    <h6 style="text-align: center; margin: 30px 0 0 0;"><font face="Arial Black">Здесь Вы межете увидеть то, чего нет в других краях</font></h6>
 
 </body>
 </html>
