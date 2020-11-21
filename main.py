@@ -21,9 +21,41 @@ session = create_session()
 def main():
     @app.route('/')
     def index():
-        return render_template('index.html')
+        return render_template('index.html', title="Гид-экскурсия")
 
     db_session.global_init("db/guided-tour.sqlite")
+
+    @app.route('/Cathedral_square')
+    def Cathedral_square():
+        return render_template('Cathedral_square.html', title="Соборная площадь")
+
+    @app.route('/Vishera_nature_reserve')
+    def Vishera_nature_reserve():
+        return render_template('Vishera_nature_reserve.html', title="Вишерский заповедник")
+
+    @app.route('/Perm-36')
+    def Perm_36():
+        return render_template('Perm-36.html', title="Пермь-36")
+
+    @app.route('/Usva_pillars')
+    def Usva_pillars():
+        return render_template('Usva_pillars.html', title="Устьвинские столбы")
+
+    @app.route('/Vakutin_stone')
+    def Vakutin_stone():
+        return render_template('Vakutin_stone.html', title="Вакутин камень")
+
+    @app.route('/Ancient_volcano')
+    def Ancient_volcano():
+        return render_template('Ancient_volcano.html', title="Древний вулкан")
+
+    @app.route('/Basegi_Nature_Reserve')
+    def Basegi_Nature_Reserve():
+        return render_template('Basegi_Nature_Reserve.html', title="Заповедник Басеги")
+
+    @app.route('/Blue_lakes')
+    def Blue_lakes():
+        return render_template('Blue_lakes.html', title="Голубые озёра")
 
 
     @login_manager.user_loader
