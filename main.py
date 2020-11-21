@@ -33,9 +33,9 @@ def main():
     def Vishera_nature_reserve():
         return render_template('Vishera_nature_reserve.html', title="Вишерский заповедник")
 
-    @app.route('/Perm-36')
+    @app.route('/Perm_36')
     def Perm_36():
-        return render_template('Perm-36.html', title="Пермь-36")
+        return render_template('Perm_36.html', title="Пермь-36")
 
     @app.route('/Usva_pillars')
     def Usva_pillars():
