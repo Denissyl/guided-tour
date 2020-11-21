@@ -49,3 +49,39 @@
 {
     margin-bottom: 0;
 }
+
+.sight1_1redirect
+{
+    width: 452px;
+    height: 290px;
+
+}
+
+.sight1_2_redirect
+{
+    width: 212px;
+    height: 290px;
+
+}
+
+.sight1_3_redirect
+{
+    width: 452px;
+    height: 290px;
+
+}
+
+.sight1_4_redirect
+{
+    width: 212px;
+    height: 290px;
+
+}
+
+.sight_caption_redirect
+{
+    background: #d9dabb;
+    display: block;
+    margin: 0 0px 0px 0;
+    text-align: center;
+}
