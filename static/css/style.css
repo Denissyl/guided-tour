@@ -30,6 +30,7 @@
 {
     width: 512px;
     height: 290px;
+
 }
 
 
@@ -38,7 +39,7 @@
     display: block;
 
     float: left;
-    margin: 0 40px 50px 0;
+    margin: 0 84px 50px 0;
     text-align: left;
 }
 .sight_caption img
