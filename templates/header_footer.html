@@ -1,7 +1,5 @@
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -14,7 +12,6 @@
 </head>
 <body>
     <header>
-
         {% if current_user.is_authenticated %}
             <div style="margin:0px 300px 0px 0px; float: right;">
                 <a class="cent" style="width: 80px; font-size:30px;">{{ current_user.nickname }}</a>
@@ -26,10 +23,8 @@
                     <a style="margin:10px 300px 0px 0px; float: right;" class="btn btn-primary" href="/register">Зарегистрироваться</a>
                     <a style=" margin:10px 5px 0px 0px; float: right;" class="btn btn-success" href="/login">Войти</a>
                 </div>
-
             </p>
         {% endif %}
-
         <div>
             <div>
                 <img style="margin:0px 0px 0px 270px; float: left;" src="static/images/logo.jpg" width="85" height="85" alt="Логотип">
@@ -44,7 +39,6 @@
             </div>
             <hr align="center" width="1300" size="5" color="black" />
         </div>
-
     </header>
     <div class="img_cont">
         <img src="static/images/main.jpg" alt="main" class="main_image">
@@ -52,13 +46,11 @@
     </div>
     {% block content %}
     {% endblock %}
-
     <footer style="clear: both;">
         <hr align="center" width="1300" size="5" color="black" />
         <main role="main" class="container">
             <p style="margin-left: 85%;">г. Пермь, 2020</p>
-        <main>
+        </main>
     </footer>
-
 </body>
 </html>
