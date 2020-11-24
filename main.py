@@ -7,6 +7,7 @@ from flask_mail import Mail, Message
 from data import db_session
 from data.db_session import global_init, create_session
 from data.feedback_form import FeedbackForm
+from data.feedbacks import Feedback
 from data.login_form import LoginForm
 from data.register import RegisterForm
 from data.users import User
@@ -26,6 +27,7 @@ app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USE_SSL'] = True
 app.config['MAIL_USERNAME'] = 'permtourcompany@gmail.com'
+app.config['MAIL_DEFAULT_SENDER'] = 'permtourcompany@gmail.com'
 app.config['MAIL_PASSWORD'] = 'p1a2s3s4'
 
 
@@ -34,12 +36,23 @@ def main():
     def index():
         form = FeedbackForm()
         if form.validate_on_submit():
-            msg = Message("Feedback", sender=[app.config['MAIL_USERNAME']], recipients=[app.config['MAIL_USERNAME']])
-            msg.body = "You have received a new feedback from."
-            mail.send(msg)
+            # msg = Message("Feedback", recipients=['denis-syl@yandex.ru'])
+            # msg.body = "You have received a new feedback from."
+            # mail.send(msg)
+            #
+            # print("Data received.")
 
-            print("\nData received. Now redirecting ...")
-            return redirect('/')
+            feedback = Feedback(
+                description=form.description.data,
+                name=form.name.data,
+                email=form.email.data,
+            )
+
+            session.add(feedback)
+            session.commit()
+
+            return render_template('index.html', title="Гид-экскурсия", form=form,
+                                   message="Ваш отзыв был отправлен")
         return render_template('index.html', title="Гид-экскурсия", form=form)
 
     db_session.global_init("db/guided-tour.sqlite")
@@ -87,6 +100,7 @@ def main():
 
             print("\nData received. Now redirecting ...")
         return render_template('index.html', form=form)
+
     @login_manager.user_loader
     def load_user(user_id):
         session = db_session.create_session()
