@@ -97,11 +97,6 @@ def main():
         if form.validate_on_submit():
             session = db_session.create_session()
             user = session.query(User).filter(User.nickname == current_user.nickname).first()
-            print(user)
-            print(user.hashed_password)
-            print(user.check_password(form.current_password.data))
-            print(form.new_password.data)
-            print(form.new_password_again.data)
             if not user.check_password(form.current_password.data) and (form.new_password.data != form.new_password_again.data):
                 return render_template('cabinet.html',
                                        form=form,
@@ -173,6 +168,5 @@ def main():
 if __name__ == '__main__':
     main()
     port = int(os.environ.get('PORT', 7000))
-    app.run(debug=True)
     app.run('0.0.0.0', port)
 
