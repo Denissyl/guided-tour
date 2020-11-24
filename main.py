@@ -1,10 +1,11 @@
 import os
 
 from flask import render_template, app, Flask, redirect
-from flask_login import LoginManager, login_user, login_required, logout_user
+from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from flask_mail import Mail, Message
 
 from data import db_session
+from data.change_password_form import ChangePasswordForm
 from data.db_session import global_init, create_session
 from data.feedback_form import FeedbackForm
 from data.feedbacks import Feedback
@@ -89,17 +90,36 @@ def main():
     def Blue_lakes():
         return render_template('Blue_lakes.html', title="Голубые озёра")
 
-    @app.route('/contact/', methods=['GET', 'POST'])
-    def contact():
-        form = FeedbackForm()
+    @app.route('/cabinet', methods=['GET', 'POST'])
+    @login_required
+    def cabinet():
+        form = ChangePasswordForm()
         if form.validate_on_submit():
+            session = db_session.create_session()
+            user = session.query(User).filter(User.nickname == current_user.nickname).first()
+            print(user)
+            print(user.hashed_password)
+            print(user.check_password(form.current_password.data))
+            print(form.new_password.data)
+            print(form.new_password_again.data)
+            if not user.check_password(form.current_password.data) and (form.new_password.data != form.new_password_again.data):
+                return render_template('cabinet.html',
+                                       form=form,
+                                       message="Текущий пароль не верный и новые пароли не совпадают")
+            if form.new_password.data != form.new_password_again.data:
+                return render_template('cabinet.html',
+                                       form=form,
+                                       message="Новые пароли не совпадают")
+            if not user.check_password(form.current_password.data):
+                return render_template('cabinet.html',
+                                       form=form,
+                                       message="Текущий пароль не верный")
 
-            msg = Message("Feedback", recipients=[app.config['MAIL_USERNAME']])
-            msg.body = "You have received a new feedback from."
-            mail.send(msg)
+            user.set_password(form.new_password.data)
+            session.add(user)
+            session.commit()
 
-            print("\nData received. Now redirecting ...")
-        return render_template('index.html', form=form)
+        return render_template('cabinet.html', title="Личный кабинет", form=form)
 
     @login_manager.user_loader
     def load_user(user_id):
@@ -153,5 +173,6 @@ def main():
 if __name__ == '__main__':
     main()
     port = int(os.environ.get('PORT', 7000))
+    app.run(debug=True)
     app.run('0.0.0.0', port)
 
