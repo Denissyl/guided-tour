@@ -2,9 +2,11 @@ import os
 
 from flask import render_template, app, Flask, redirect
 from flask_login import LoginManager, login_user, login_required, logout_user
+from flask_mail import Mail, Message
 
 from data import db_session
 from data.db_session import global_init, create_session
+from data.feedback_form import FeedbackForm
 from data.login_form import LoginForm
 from data.register import RegisterForm
 from data.users import User
@@ -18,10 +20,27 @@ login_manager.init_app(app)
 global_init('db/guided-tour.sqlite')
 session = create_session()
 
+mail = Mail(app)
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USE_SSL'] = True
+app.config['MAIL_USERNAME'] = 'permtourcompany@gmail.com'
+app.config['MAIL_PASSWORD'] = 'p1a2s3s4'
+
+
 def main():
-    @app.route('/')
+    @app.route('/', methods=['GET', 'POST'])
     def index():
-        return render_template('index.html', title="Гид-экскурсия")
+        form = FeedbackForm()
+        if form.validate_on_submit():
+            msg = Message("Feedback", sender=[app.config['MAIL_USERNAME']], recipients=[app.config['MAIL_USERNAME']])
+            msg.body = "You have received a new feedback from."
+            mail.send(msg)
+
+            print("\nData received. Now redirecting ...")
+            return redirect('/')
+        return render_template('index.html', title="Гид-экскурсия", form=form)
 
     db_session.global_init("db/guided-tour.sqlite")
 
@@ -57,7 +76,17 @@ def main():
     def Blue_lakes():
         return render_template('Blue_lakes.html', title="Голубые озёра")
 
+    @app.route('/contact/', methods=['GET', 'POST'])
+    def contact():
+        form = FeedbackForm()
+        if form.validate_on_submit():
 
+            msg = Message("Feedback", recipients=[app.config['MAIL_USERNAME']])
+            msg.body = "You have received a new feedback from."
+            mail.send(msg)
+
+            print("\nData received. Now redirecting ...")
+        return render_template('index.html', form=form)
     @login_manager.user_loader
     def load_user(user_id):
         session = db_session.create_session()
