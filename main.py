@@ -6,6 +6,8 @@ from flask_mail import Mail, Message
 
 from data import db_session
 from data.change_password_form import ChangePasswordForm
+from data.comment_form import CommentForm
+from data.comments import Comment
 from data.db_session import global_init, create_session
 from data.feedback_form import FeedbackForm
 from data.feedbacks import Feedback
@@ -58,9 +60,36 @@ def main():
 
     db_session.global_init("db/guided-tour.sqlite")
 
-    @app.route('/Cathedral_square')
+    # @app.route('/comment', methods=['GET', 'POST'])
+    # def comment():
+    #     form = CommentForm()
+    #     if form.validate_on_submit():
+    #         print('gr')
+
+
+    @app.route('/Cathedral_square', methods=['GET', 'POST'])
     def Cathedral_square():
-        return render_template('Cathedral_square.html', title="Соборная площадь")
+        form = CommentForm()
+        # session = db_session.create_session()
+        # comment = session.query(Comment)
+        # for i in range(session.query(Comment).count()):
+        #     print(comment[i].nickname)
+        #     print(comment[i].description)
+        #     print(comment[i].mark)
+        if form.validate_on_submit():
+            comment_to_db = Comment(
+                    description=form.description.data,
+                    nickname=current_user.nickname,
+                    email=current_user.email,
+                    mark=form.mark.data
+            )
+
+            session.add(comment_to_db)
+            session.commit()
+
+
+
+        return render_template('Cathedral_square.html', title="Соборная площадь", Comment=Comment, session=session, form=form)
 
     @app.route('/Vishera_nature_reserve')
     def Vishera_nature_reserve():
@@ -168,5 +197,6 @@ def main():
 if __name__ == '__main__':
     main()
     port = int(os.environ.get('PORT', 7000))
+    app.run(debug=True)
     app.run('0.0.0.0', port)
 

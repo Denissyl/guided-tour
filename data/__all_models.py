@@ -1,1 +1,1 @@
-from . import users, feedbacks
+from . import users, feedbacks, comments
