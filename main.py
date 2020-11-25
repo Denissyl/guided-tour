@@ -78,7 +78,7 @@ def main():
 
         return render_template('Cathedral_square.html', sight="Cathedral_square", title="Соборная площадь", Comment=Comment, session=session, form=form)
 
-    @app.route('/Vishera_nature_reserve')
+    @app.route('/Vishera_nature_reserve', methods=['GET', 'POST'])
     def Vishera_nature_reserve():
         form = CommentForm()
         if form.validate_on_submit():
@@ -94,7 +94,7 @@ def main():
             session.commit()
         return render_template('Vishera_nature_reserve.html', sight="Vishera_nature_reserve", title="Вишерский заповедник", Comment=Comment, session=session, form=form)
 
-    @app.route('/Perm_36')
+    @app.route('/Perm_36', methods=['GET', 'POST'])
     def Perm_36():
         form = CommentForm()
         if form.validate_on_submit():
@@ -110,7 +110,7 @@ def main():
             session.commit()
         return render_template('Perm_36.html', sight="Perm_36", title="Пермь-36", Comment=Comment, session=session, form=form)
 
-    @app.route('/Usva_pillars')
+    @app.route('/Usva_pillars', methods=['GET', 'POST'])
     def Usva_pillars():
         form = CommentForm()
         if form.validate_on_submit():
@@ -126,7 +126,7 @@ def main():
             session.commit()
         return render_template('Usva_pillars.html', sight="Usva_pillars", title="Устьвинские столбы", Comment=Comment, session=session, form=form)
 
-    @app.route('/Vakutin_stone')
+    @app.route('/Vakutin_stone', methods=['GET', 'POST'])
     def Vakutin_stone():
         form = CommentForm()
         if form.validate_on_submit():
@@ -142,7 +142,7 @@ def main():
             session.commit()
         return render_template('Vakutin_stone.html', sight="Vakutin_stone", title="Вакутин камень", Comment=Comment, session=session, form=form)
 
-    @app.route('/Ancient_volcano')
+    @app.route('/Ancient_volcano', methods=['GET', 'POST'])
     def Ancient_volcano():
         form = CommentForm()
         if form.validate_on_submit():
@@ -158,7 +158,7 @@ def main():
             session.commit()
         return render_template('Ancient_volcano.html', sight="Ancient_volcano", title="Древний вулкан", Comment=Comment, session=session, form=form)
 
-    @app.route('/Basegi_Nature_Reserve')
+    @app.route('/Basegi_Nature_Reserve', methods=['GET', 'POST'])
     def Basegi_Nature_Reserve():
         form = CommentForm()
         if form.validate_on_submit():
@@ -174,7 +174,7 @@ def main():
             session.commit()
         return render_template('Basegi_Nature_Reserve.html', sight="Basegi_Nature_Reserve", title="Заповедник Басеги", Comment=Comment, session=session, form=form)
 
-    @app.route('/Blue_lakes')
+    @app.route('/Blue_lakes', methods=['GET', 'POST'])
     def Blue_lakes():
         form = CommentForm()
         if form.validate_on_submit():
