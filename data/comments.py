@@ -10,6 +10,7 @@ class Comment(SqlAlchemyBase, UserMixin):
     id = sqlalchemy.Column(sqlalchemy.Integer,
                            primary_key=True, autoincrement=True)
     description = sqlalchemy.Column(sqlalchemy.String)
+    sight = sqlalchemy.Column(sqlalchemy.String)
     nickname = sqlalchemy.Column(sqlalchemy.String)
     email = sqlalchemy.Column(sqlalchemy.String)
     mark = sqlalchemy.Column(sqlalchemy.Integer)

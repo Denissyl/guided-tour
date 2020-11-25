@@ -60,25 +60,14 @@ def main():
 
     db_session.global_init("db/guided-tour.sqlite")
 
-    # @app.route('/comment', methods=['GET', 'POST'])
-    # def comment():
-    #     form = CommentForm()
-    #     if form.validate_on_submit():
-    #         print('gr')
-
 
     @app.route('/Cathedral_square', methods=['GET', 'POST'])
     def Cathedral_square():
         form = CommentForm()
-        # session = db_session.create_session()
-        # comment = session.query(Comment)
-        # for i in range(session.query(Comment).count()):
-        #     print(comment[i].nickname)
-        #     print(comment[i].description)
-        #     print(comment[i].mark)
         if form.validate_on_submit():
             comment_to_db = Comment(
                     description=form.description.data,
+                    sight="Cathedral_square",
                     nickname=current_user.nickname,
                     email=current_user.email,
                     mark=form.mark.data
@@ -87,37 +76,119 @@ def main():
             session.add(comment_to_db)
             session.commit()
 
-
-
-        return render_template('Cathedral_square.html', title="Соборная площадь", Comment=Comment, session=session, form=form)
+        return render_template('Cathedral_square.html', sight="Cathedral_square", title="Соборная площадь", Comment=Comment, session=session, form=form)
 
     @app.route('/Vishera_nature_reserve')
     def Vishera_nature_reserve():
-        return render_template('Vishera_nature_reserve.html', title="Вишерский заповедник")
+        form = CommentForm()
+        if form.validate_on_submit():
+            comment_to_db = Comment(
+                description=form.description.data,
+                sight="Vishera_nature_reserve",
+                nickname=current_user.nickname,
+                email=current_user.email,
+                mark=form.mark.data
+            )
+
+            session.add(comment_to_db)
+            session.commit()
+        return render_template('Vishera_nature_reserve.html', sight="Vishera_nature_reserve", title="Вишерский заповедник", Comment=Comment, session=session, form=form)
 
     @app.route('/Perm_36')
     def Perm_36():
-        return render_template('Perm_36.html', title="Пермь-36")
+        form = CommentForm()
+        if form.validate_on_submit():
+            comment_to_db = Comment(
+                description=form.description.data,
+                sight="Perm_36",
+                nickname=current_user.nickname,
+                email=current_user.email,
+                mark=form.mark.data
+            )
+
+            session.add(comment_to_db)
+            session.commit()
+        return render_template('Perm_36.html', sight="Perm_36", title="Пермь-36", Comment=Comment, session=session, form=form)
 
     @app.route('/Usva_pillars')
     def Usva_pillars():
-        return render_template('Usva_pillars.html', title="Устьвинские столбы")
+        form = CommentForm()
+        if form.validate_on_submit():
+            comment_to_db = Comment(
+                description=form.description.data,
+                sight="Usva_pillars",
+                nickname=current_user.nickname,
+                email=current_user.email,
+                mark=form.mark.data
+            )
+
+            session.add(comment_to_db)
+            session.commit()
+        return render_template('Usva_pillars.html', sight="Usva_pillars", title="Устьвинские столбы", Comment=Comment, session=session, form=form)
 
     @app.route('/Vakutin_stone')
     def Vakutin_stone():
-        return render_template('Vakutin_stone.html', title="Вакутин камень")
+        form = CommentForm()
+        if form.validate_on_submit():
+            comment_to_db = Comment(
+                description=form.description.data,
+                sight="Vakutin_stone",
+                nickname=current_user.nickname,
+                email=current_user.email,
+                mark=form.mark.data
+            )
+
+            session.add(comment_to_db)
+            session.commit()
+        return render_template('Vakutin_stone.html', sight="Vakutin_stone", title="Вакутин камень", Comment=Comment, session=session, form=form)
 
     @app.route('/Ancient_volcano')
     def Ancient_volcano():
-        return render_template('Ancient_volcano.html', title="Древний вулкан")
+        form = CommentForm()
+        if form.validate_on_submit():
+            comment_to_db = Comment(
+                description=form.description.data,
+                sight="Ancient_volcano",
+                nickname=current_user.nickname,
+                email=current_user.email,
+                mark=form.mark.data
+            )
+
+            session.add(comment_to_db)
+            session.commit()
+        return render_template('Ancient_volcano.html', sight="Ancient_volcano", title="Древний вулкан", Comment=Comment, session=session, form=form)
 
     @app.route('/Basegi_Nature_Reserve')
     def Basegi_Nature_Reserve():
-        return render_template('Basegi_Nature_Reserve.html', title="Заповедник Басеги")
+        form = CommentForm()
+        if form.validate_on_submit():
+            comment_to_db = Comment(
+                description=form.description.data,
+                sight="Basegi_Nature_Reserve",
+                nickname=current_user.nickname,
+                email=current_user.email,
+                mark=form.mark.data
+            )
+
+            session.add(comment_to_db)
+            session.commit()
+        return render_template('Basegi_Nature_Reserve.html', sight="Basegi_Nature_Reserve", title="Заповедник Басеги", Comment=Comment, session=session, form=form)
 
     @app.route('/Blue_lakes')
     def Blue_lakes():
-        return render_template('Blue_lakes.html', title="Голубые озёра")
+        form = CommentForm()
+        if form.validate_on_submit():
+            comment_to_db = Comment(
+                description=form.description.data,
+                sight="Blue_lakes",
+                nickname=current_user.nickname,
+                email=current_user.email,
+                mark=form.mark.data
+            )
+
+            session.add(comment_to_db)
+            session.commit()
+        return render_template('Blue_lakes.html', sight="Blue_lakes", title="Голубые озёра", Comment=Comment, session=session, form=form)
 
     @app.route('/cabinet', methods=['GET', 'POST'])
     @login_required
@@ -197,6 +268,6 @@ def main():
 if __name__ == '__main__':
     main()
     port = int(os.environ.get('PORT', 7000))
-    app.run(debug=True)
+    # app.run(debug=True)
     app.run('0.0.0.0', port)
 

@@ -20,49 +20,5 @@
                 </main>
         </figure>
     </div>
-    <div>
-        <main role="main" class="container">
-            <h6 style="margin-bottom: 30px; margin-top: 40px;">Оставить комментарий</h6>
-            <form action="" method="post">
-                {{ form.hidden_tag() }}
-                <p>
-                    {{ form.description.label }}<br>
-                    {{ form.description(class="form-control", type="description") }}<br>
-                    {% for error in form.description.errors %}
-                        <div class="alert alert-danger" role="alert">
-                            {{ error }}
-                        </div>
-                    {% endfor %}
-                </p>
-                <p>
-                     {{ form.mark.label }}<br>
-                     {% for mark in form.mark %}
-                         {{ mark }}
-                         {{ mark.label }}
-                     {% endfor %}
-                     {% for error in form.mark.errors %}
-                        <div class="alert alert-danger" role="alert">
-                            {{ error }}
-                        </div>
-                     {% endfor %}
-                 </p>
-                <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
-                <div>{{ message }}</div>
-            </form>
-            <h3 style="text-align: center;">Комментарии</h3>
-            {% set comment = session.query(Comment) %}
-            {% for i in range(session.query(Comment).count()) %}
-            <div>
-                <h3 style="float: left;">{{ comment[i].nickname }}</h3>
-                {% set points = {"one_point": 1, "two_points": 2, "three_points": 3,
-                    "four_points":4, "five_points": 5} %}
-                    {% for i in range(points[comment[i].mark]) %}
-                        <img style="width: 30px; height: 30px; float: right;" src="static/images/star.jpg">
-                    {% endfor %}
-                <p style="clear: both;">{{ comment[i].description }}</p>
-            </div>
-            {% endfor %}
-        </main>
-
-    </div>
+    {% include "comment.html" %}
 {% endblock %}
