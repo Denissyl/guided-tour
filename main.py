@@ -107,28 +107,35 @@ def main():
     @app.route('/cabinet', methods=['GET', 'POST'])
     @login_required
     def cabinet():
+        return render_template('cabinet.html', title="Личный кабинет")
+
+    @app.route('/change_password', methods=['GET', 'POST'])
+    @login_required
+    def change_password():
         form = ChangePasswordForm()
         if form.validate_on_submit():
             session = db_session.create_session()
             user = session.query(User).filter(User.nickname == current_user.nickname).first()
-            if not user.check_password(form.current_password.data) and (form.new_password.data != form.new_password_again.data):
-                return render_template('cabinet.html',
+            if not user.check_password(form.current_password.data) and (
+                    form.new_password.data != form.new_password_again.data):
+                return render_template('change_password.html',
                                        form=form,
                                        message="Текущий пароль не верный и новые пароли не совпадают")
             if form.new_password.data != form.new_password_again.data:
-                return render_template('cabinet.html',
+                return render_template('change_password.html',
                                        form=form,
                                        message="Новые пароли не совпадают")
             if not user.check_password(form.current_password.data):
-                return render_template('cabinet.html',
+                return render_template('change_password.html',
                                        form=form,
                                        message="Текущий пароль не верный")
 
             user.set_password(form.new_password.data)
             session.add(user)
             session.commit()
-
-        return render_template('cabinet.html', title="Личный кабинет", form=form)
+            return render_template('change_password.html', title="Личный кабинет",
+                                   message="Ваш пароль был изменен", form=form)
+        return render_template('change_password.html', title="Личный кабинет", form=form)
 
     @login_manager.user_loader
     def load_user(user_id):
