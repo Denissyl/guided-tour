@@ -86,7 +86,6 @@ def main():
             else:
                 return redirect('/login')
 
-
         return render_template(sight + ".html",
                                sight=sight, title=sight,
                                Comment=Comment, session=session, form=form)
