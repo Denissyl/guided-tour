@@ -1,14 +1,13 @@
 import datetime
 import os
 
-import pytz
 from flask import render_template, app, Flask, redirect
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from flask_mail import Mail, Message
 
 from data import db_session
-from data.add_comment_to_db import add_comment_to_db
 from data.change_password_form import ChangePasswordForm
+from data.comment_form import CommentForm
 from data.comments import Comment
 from data.db_session import global_init, create_session
 from data.feedback_form import FeedbackForm
@@ -62,65 +61,25 @@ def main():
 
     db_session.global_init("db/guided-tour.sqlite")
 
+    @app.route('/<sight>', methods=['GET', 'POST'])
+    def sights(sight):
+        form = CommentForm()
+        if form.validate_on_submit():
+            comment_to_db = Comment(
+                description=form.description.data,
+                sight=sight,
+                nickname=current_user.nickname,
+                email=current_user.email,
+                mark=form.mark.data,
+                datetime=str(datetime.datetime.now(datetime.timezone.utc) +
+                             datetime.timedelta(hours=5, minutes=0))[:19]
+            )
 
+            session.add(comment_to_db)
+            session.commit()
 
-    @app.route('/Cathedral_square', methods=['GET', 'POST'])
-    def Cathedral_square():
-        form = add_comment_to_db("Cathedral_square", current_user.nickname, current_user.email, session)
-        return render_template('Cathedral_square.html', message="Ваш комментарий был отправлен",
-                               sight="Cathedral_square", title="Соборная площадь",
-                               Comment=Comment, session=session, form=form)
-
-    @app.route('/Vishera_nature_reserve', methods=['GET', 'POST'])
-    def Vishera_nature_reserve():
-        form = add_comment_to_db("Vishera_nature_reserve", current_user.nickname, current_user.email, session)
-        return render_template('Vishera_nature_reserve.html',
-                               message="Ваш комментарий был отправлен",
-                               sight="Vishera_nature_reserve", title="Вишерский заповедник",
-                               Comment=Comment, session=session, form=form)
-
-    @app.route('/Perm_36', methods=['GET', 'POST'])
-    def Perm_36():
-        form = add_comment_to_db("Perm_36", current_user.nickname, current_user.email, session)
-        return render_template('Perm_36.html', sight="Perm_36",
-                               message="Ваш комментарий был отправлен",
-                               title="Пермь-36", Comment=Comment,
-                               session=session, form=form)
-
-    @app.route('/Usva_pillars', methods=['GET', 'POST'])
-    def Usva_pillars():
-        form = add_comment_to_db("Usva_pillars", current_user.nickname, current_user.email, session)
-        return render_template('Usva_pillars.html', sight="Usva_pillars",
-                               message="Ваш комментарий был отправлен",
-                               title="Устьвинские столбы", Comment=Comment,
-                               session=session, form=form)
-
-    @app.route('/Vakutin_stone', methods=['GET', 'POST'])
-    def Vakutin_stone():
-        form = add_comment_to_db("Vakutin_stone", current_user.nickname, current_user.email, session)
-        return render_template('Vakutin_stone.html', sight="Vakutin_stone",
-                               message="Ваш комментарий был отправлен",
-                               title="Вакутин камень", Comment=Comment, session=session, form=form)
-
-    @app.route('/Ancient_volcano', methods=['GET', 'POST'])
-    def Ancient_volcano():
-        form = add_comment_to_db("Ancient_volcano", current_user.nickname, current_user.email, session)
-        return render_template('Ancient_volcano.html', sight="Ancient_volcano",
-                               message="Ваш комментарий был отправлен", title="Древний вулкан",
-                               Comment=Comment, session=session, form=form)
-
-    @app.route('/Basegi_Nature_Reserve', methods=['GET', 'POST'])
-    def Basegi_Nature_Reserve():
-        form = add_comment_to_db("Basegi_Nature_Reserve", current_user.nickname, current_user.email, session)
-        return render_template('Basegi_Nature_Reserve.html', sight="Basegi_Nature_Reserve",
-                               message="Ваш комментарий был отправлен", title="Заповедник Басеги",
-                               Comment=Comment, session=session, form=form)
-
-    @app.route('/Blue_lakes', methods=['GET', 'POST'])
-    def Blue_lakes():
-        form = add_comment_to_db("Blue_lakes", current_user.nickname, current_user.email, session)
-        return render_template('Blue_lakes.html', sight="Blue_lakes",
-                               message="Ваш комментарий был отправлен", title="Голубые озёра",
+        return render_template(sight + ".html", message="Ваш комментарий был отправлен",
+                               sight=sight, title=sight,
                                Comment=Comment, session=session, form=form)
 
     @app.route('/cabinet', methods=['GET', 'POST'])
