@@ -34,12 +34,14 @@
             {% if comment[i].sight == sight %}
                 <div>
                     <h3 style="float: left;">{{ comment[i].nickname }}</h3>
+                    <p style="float: left;">{{ comment[i].datetime }}</p>
                     {% set points = {"one_point": 1, "two_points": 2, "three_points": 3,
                         "four_points":4, "five_points": 5} %}
                         {% for i in range(points[comment[i].mark]) %}
                             <img style="width: 30px; height: 30px; float: right;" src="static/images/star.jpg">
                         {% endfor %}
                     <p style="clear: both;">{{ comment[i].description }}</p>
+
                 </div>
             {% endif %}
         {% endfor %}

@@ -14,3 +14,4 @@ class Comment(SqlAlchemyBase, UserMixin):
     nickname = sqlalchemy.Column(sqlalchemy.String)
     email = sqlalchemy.Column(sqlalchemy.String)
     mark = sqlalchemy.Column(sqlalchemy.Integer)
+    datetime = sqlalchemy.Column(sqlalchemy.String)
