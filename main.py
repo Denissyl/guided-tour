@@ -65,22 +65,44 @@ def main():
     def sights(sight):
         form = CommentForm()
         if form.validate_on_submit():
-            comment_to_db = Comment(
-                description=form.description.data,
-                sight=sight,
-                nickname=current_user.nickname,
-                email=current_user.email,
-                mark=form.mark.data,
-                datetime=str(datetime.datetime.now(datetime.timezone.utc) +
-                             datetime.timedelta(hours=5, minutes=0))[:19]
-            )
+            if current_user.is_authenticated:
+                comment_to_db = Comment(
+                    description=form.description.data,
+                    sight=sight,
+                    nickname=current_user.nickname,
+                    email=current_user.email,
+                    mark=form.mark.data,
+                    datetime=str(datetime.datetime.now(datetime.timezone.utc) +
+                                 datetime.timedelta(hours=5, minutes=0))[:19]
+                )
 
-            session.add(comment_to_db)
-            session.commit()
+                session.add(comment_to_db)
+                session.commit()
+                return render_template(sight + ".html", message="Ваш комментарий был отправлен",
+                                       sight=sight, title=sight,
+                                       Comment=Comment, session=session, form=form)
+            else:
+                return redirect('/login')
 
-        return render_template(sight + ".html", message="Ваш комментарий был отправлен",
+
+        return render_template(sight + ".html",
                                sight=sight, title=sight,
                                Comment=Comment, session=session, form=form)
+
+    @app.route('/delete_comment/<sight>/<number>', methods=['GET', 'POST'])
+    def delete_comment(sight, number):
+        if current_user.is_authenticated:
+            session = db_session.create_session()
+            comment = session.query(Comment).get(number)
+
+            session.delete(comment)
+            session.commit()
+            return redirect('/' + sight)
+        else:
+            return redirect('/login')
+
+
+
 
     @app.route('/cabinet', methods=['GET', 'POST'])
     @login_required

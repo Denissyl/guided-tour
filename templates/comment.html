@@ -37,9 +37,15 @@
                     <p style="float: left;">{{ comment[i].datetime }}</p>
                     {% set points = {"one_point": 1, "two_points": 2, "three_points": 3,
                         "four_points":4, "five_points": 5} %}
+                        <div style="float: right;">
                         {% for i in range(points[comment[i].mark]) %}
-                            <img style="width: 30px; height: 30px; float: right;" src="static/images/star.jpg">
+                            <img style="width: 30px; height: 30px;" src="static/images/star.jpg">
                         {% endfor %}
+                            {% if comment[i].nickname == current_user.nickname %}
+                                {% set comment_id = "/delete_comment/" + comment[i].sight + "/" + comment[i].id | string %}
+                                <a class="btn btn-danger" href="{{ comment_id }}">Удалить</a>
+                            {% endif %}
+                        </div>
                     <p style="clear: both;">{{ comment[i].description }}</p>
 
                 </div>
