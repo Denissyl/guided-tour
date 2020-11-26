@@ -96,6 +96,7 @@ def main():
     def add_note(sight):
         form = NoteForm()
         if form.validate_on_submit():
+            session = db_session.create_session()
             if current_user.is_authenticated:
                 note_to_db = Note(
                     note=form.note.data,
@@ -113,10 +114,11 @@ def main():
             else:
                 return redirect('/login')
 
+
         return render_template('add_note.html', title="Добавить заметку", form=form)
 
-    @app.route('/delete_note/<sight>/<number>', methods=['GET', 'POST'])
-    def delete_note(sight, number):
+    @app.route('/delete_note/<number>', methods=['GET', 'POST'])
+    def delete_note(number):
         if current_user.is_authenticated:
             session = db_session.create_session()
             note = session.query(Note).get(number)
@@ -225,6 +227,6 @@ def main():
 if __name__ == '__main__':
     main()
     port = int(os.environ.get('PORT', 7000))
-    # app.run(debug=True)
+    app.run(debug=True)
     app.run('0.0.0.0', port)
 

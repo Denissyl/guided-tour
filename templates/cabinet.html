@@ -17,13 +17,13 @@
                 <h5 style="float: left;">{{ sights[note_db[i].sight] }} &#160;</h5>
                 <p style="float: left;">{{ note_db[i].datetime }}</p>
                     <div style="float: right;">
-                        {% set note_id = "/delete_note/" + note_db[i].sight + "/" + note_db[i].id | string %}
+                        {% set note_id = "/delete_note/" + "/" + note_db[i].id | string %}
                         <a class="btn btn-danger" href="{{ note_id }}">Удалить</a>
                     </div>
                 <p style="clear: both;">{{ note_db[i].note }}</p>
                 {% endif %}
             {% endfor %}
             </div>
-        <main>
+        </main>
     </div>
 {% endblock %}
