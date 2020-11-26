@@ -17,8 +17,11 @@
                     прозванного Государевой дорогой, из центра России в Сибирь. И
                     Троицкий собор — строение XVII века, самое масштабное и красивое
                     среди религиозных объектов края.</p>
+                    {% set note_href = "/add_note/" + "Cathedral_square" %}
+                    <a style=" float: right;" class="btn btn-info" href="{{ note_href }}">Добавить в заметки</a>
                 </main>
         </figure>
     </div>
+
     {% include "comment.html" %}
 {% endblock %}

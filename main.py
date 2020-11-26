@@ -13,6 +13,8 @@ from data.db_session import global_init, create_session
 from data.feedback_form import FeedbackForm
 from data.feedbacks import Feedback
 from data.login_form import LoginForm
+from data.note_form import NoteForm
+from data.notes import Note
 from data.register import RegisterForm
 from data.users import User
 
@@ -89,6 +91,42 @@ def main():
                                sight=sight, title=sight,
                                Comment=Comment, session=session, form=form)
 
+    @app.route('/add_note/<sight>', methods=['GET', 'POST'])
+    @login_required
+    def add_note(sight):
+        form = NoteForm()
+        if form.validate_on_submit():
+            if current_user.is_authenticated:
+                note_to_db = Note(
+                    note=form.note.data,
+                    sight=sight,
+                    nickname=current_user.nickname,
+                    email=current_user.email,
+                    datetime=str(datetime.datetime.now(datetime.timezone.utc) +
+                                 datetime.timedelta(hours=5, minutes=0))[:19]
+                )
+
+                session.add(note_to_db)
+                session.commit()
+
+                return redirect('/cabinet')
+            else:
+                return redirect('/login')
+
+        return render_template('add_note.html', title="Добавить заметку", form=form)
+
+    @app.route('/delete_note/<sight>/<number>', methods=['GET', 'POST'])
+    def delete_note(sight, number):
+        if current_user.is_authenticated:
+            session = db_session.create_session()
+            note = session.query(Note).get(number)
+
+            session.delete(note)
+            session.commit()
+            return redirect('/cabinet')
+        else:
+            return redirect('/login')
+
     @app.route('/delete_comment/<sight>/<number>', methods=['GET', 'POST'])
     def delete_comment(sight, number):
         if current_user.is_authenticated:
@@ -102,12 +140,10 @@ def main():
             return redirect('/login')
 
 
-
-
     @app.route('/cabinet', methods=['GET', 'POST'])
     @login_required
     def cabinet():
-        return render_template('cabinet.html', title="Личный кабинет")
+        return render_template('cabinet.html', title="Личный кабинет", Note=Note, session=session)
 
     @app.route('/change_password', methods=['GET', 'POST'])
     @login_required

@@ -1,7 +1,6 @@
-
 <div>
     <main role="main" class="container">
-        <h6 style="margin-bottom: 30px; margin-top: 40px;">Оставить комментарий</h6>
+        <h6 style="margin-bottom: 30px; margin-top: 60px;">Оставить комментарий</h6>
         <form action="" method="post">
             {{ form.hidden_tag() }}
             <p>
@@ -33,7 +32,7 @@
         {% for i in range(session.query(Comment).count()) %}
             {% if comment[i].sight == sight %}
                 <div>
-                    <h3 style="float: left;">{{ comment[i].nickname }}</h3>
+                    <h3 style="float: left;">{{ comment[i].nickname }} &#160;</h3>
                     <p style="float: left;">{{ comment[i].datetime }}</p>
                     {% set points = {"one_point": 1, "two_points": 2, "three_points": 3,
                         "four_points":4, "five_points": 5} %}
@@ -47,7 +46,6 @@
                             {% endif %}
                         </div>
                     <p style="clear: both;">{{ comment[i].description }}</p>
-
                 </div>
             {% endif %}
         {% endfor %}

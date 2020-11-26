@@ -4,8 +4,26 @@
     <div>
         <h3 style="text-align: center; margin-top: 50px;">Личный кабинет</h3>
         <main role="main" class="container">
-            <h5 style="margin: 70px 0px 0px 0px; ">Смена пароля</h5>
-            <a style="margin: 20px 0px 70px 0px;" class="btn btn-info" href="/change_password">Изменить пароль</a>
+            <h4 style="margin: 70px 0px 0px 0px; ">Смена пароля</h4>
+            <a style="margin: 20px 0px 0px 0px;" class="btn btn-info" href="/change_password">Изменить пароль</a>
+            <h4 style="margin: 70px 0px 40px 0px; ">Заметки</h4>
+            {% set note_db = session.query(Note) %}
+            {% for i in range(session.query(Note).count()) %}
+            <div>
+                {% if note_db[i].nickname == current_user.nickname %}
+                {% set sights = {"Ancient_volcano": "Древний вулкан", "Basegi_Nature_Reserve": "Заповедник Басеги",
+                "Blue_lakes": "Голубые озёра", "Cathedral_square": "Соборная площадь", "Perm_36": "Пермь-36", "Usva_pillars": "Устьвинские столбы",
+                "Vakutin_stone": "Вакутин камень", "Vishera_nature_reserve": "Вишерский заповедник"} %}
+                <h5 style="float: left;">{{ sights[note_db[i].sight] }} &#160;</h5>
+                <p style="float: left;">{{ note_db[i].datetime }}</p>
+                    <div style="float: right;">
+                        {% set note_id = "/delete_note/" + note_db[i].sight + "/" + note_db[i].id | string %}
+                        <a class="btn btn-danger" href="{{ note_id }}">Удалить</a>
+                    </div>
+                <p style="clear: both;">{{ note_db[i].note }}</p>
+                {% endif %}
+            {% endfor %}
+            </div>
         <main>
     </div>
 {% endblock %}

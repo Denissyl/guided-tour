@@ -1,0 +1,26 @@
+{% extends "header_footer.html" %}
+
+{% block content %}
+
+<div>
+    <main role="main" class="container">
+        <h3 style="text-align: center; margin-top: 30px;">Добавить в заметки</h3>
+        <form style="margin-top: 30px;" action="" method="post">
+            {{ form.hidden_tag() }}
+            {{ form.csrf_token }}
+            <p>
+                {{ form.note.label }}<br>
+                {{ form.note(class="form-control", type="form-control") }}<br>
+                {% for error in form.note.errors %}
+                    <p class="alert alert-danger" role="alert">
+                        {{ error }}
+                    </p>
+                {% endfor %}
+            </p>
+            <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+            {{message}}
+        </form>
+    </main>
+</div>
+
+{% endblock %}
