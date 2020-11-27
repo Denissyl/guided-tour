@@ -21,7 +21,7 @@ from data.users import User
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'ptpit_secret_key'
 login_manager = LoginManager()
-login_manager.login_view = '/register'
+login_manager.login_view = 'login'
 login_manager.init_app(app)
 
 global_init('db/guided-tour.sqlite')
@@ -65,6 +65,12 @@ def main():
 
     @app.route('/<sight>', methods=['GET', 'POST'])
     def sights(sight):
+        sights = {"Ancient_volcano": "Древний вулкан",
+                  "Basegi_Nature_Reserve": "Заповедник Басеги",
+                  "Blue_lakes": "Голубые озёра", "Cathedral_square": "Соборная площадь",
+                  "Perm_36": "Пермь-36", "Usva_pillars": "Устьвинские столбы",
+                  "Vakutin_stone": "Вакутин камень",
+                  "Vishera_nature_reserve": "Вишерский заповедник"}
         form = CommentForm()
         if form.validate_on_submit():
             if current_user.is_authenticated:
@@ -80,6 +86,7 @@ def main():
 
                 session.add(comment_to_db)
                 session.commit()
+
                 return render_template(sight + ".html", message="Ваш комментарий был отправлен",
                                        sight=sight, title=sight,
                                        Comment=Comment, session=session, form=form)
@@ -87,7 +94,7 @@ def main():
                 return redirect('/login')
 
         return render_template(sight + ".html",
-                               sight=sight, title=sight,
+                               sight=sight, title=sights[sight],
                                Comment=Comment, session=session, form=form)
 
     @app.route('/add_note/<sight>', methods=['GET', 'POST'])
