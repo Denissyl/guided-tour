@@ -62,7 +62,7 @@ def main():
                 session.commit()
 
                 return render_template('index.html', title="Гид-экскурсия", form=form,
-                                       message="Ваш отзыв был отправлен")
+                                       message="Ваш отзыв был отправлен", Post=Post, session=session)
             return redirect("login")
 
         return render_template('index.html', Post=Post, session=session, title="Гид-экскурсия", form=form)
@@ -100,7 +100,10 @@ def main():
                     return render_template(sight + ".html", message="Ваш комментарий был отправлен",
                                            sight=sight, title=sight,
                                            Comment=Comment, session=session, form=form)
-
+                else:
+                    return render_template("add_post_page.html", message="Ваш комментарий был отправлен",
+                                           sight=sight, title=sight,
+                                           Comment=Comment, session=session, form=form, Post=Post)
             else:
                 return redirect('/login')
 
@@ -188,10 +191,23 @@ def main():
         else:
             return redirect('/login')
 
+    @app.route('/delete_post/<sight>/<number>', methods=['GET', 'POST'])
+    def delete_post(sight, number):
+        if current_user.is_authenticated:
+            session = db_session.create_session()
+            post = session.query(Post).get(number)
+
+            session.delete(post)
+            session.commit()
+
+            return redirect("/")
+        else:
+            return redirect('/login')
+
     @app.route('/cabinet', methods=['GET', 'POST'])
     @login_required
     def cabinet():
-        return render_template('cabinet.html', title="Личный кабинет", Note=Note, session=session)
+        return render_template('cabinet.html', title="Личный кабинет", Note=Note, session=session, User=User)
 
     @app.route('/change_password', methods=['GET', 'POST'])
     @login_required
@@ -242,6 +258,8 @@ def main():
             user = User(
                 nickname=form.nickname.data,
                 email=form.email.data,
+                datetime=str(datetime.datetime.now(datetime.timezone.utc) +
+                             datetime.timedelta(hours=5, minutes=0))[:19]
             )
             user.set_password(form.password.data)
             session.add(user)

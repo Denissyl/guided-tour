@@ -4,6 +4,9 @@
     <div>
         <h3 style="text-align: center; margin-top: 50px;">Личный кабинет</h3>
         <main role="main" class="container">
+            <h5>email: {{ current_user.email }}</h5>
+            <h5>Имя пользователя: {{ current_user.nickname }}</h5>
+            <h5>Аккаунт создан: {{ current_user.datetime }}</h5>
             <h4 style="margin: 70px 0px 0px 0px; ">Смена пароля</h4>
             <a style="margin: 20px 0px 0px 0px;" class="btn btn-info" href="/change_password">Изменить пароль</a>
             <h4 style="margin: 70px 0px 40px 0px; ">Заметки</h4>
