@@ -8,9 +8,10 @@
         {% if sight == post[i].sight %}
         <h5 style="float:left; margin-top: 12px;">Опубликовано пользователем {{ post[i].nickname }} {{ post[i].datetime }}</h5>
         {% set href = "/delete_post/" + post[i].sight + "/" + post[i].id | string %}
-        <a style="float:right; margin-top: 7px;" class="btn btn-danger" href="{{ href }}">Удалить</a>
+        {% if current_user.nickname == post[i].nickname %}
+            <a style="float:right; margin-top: 7px;" class="btn btn-danger" href="{{ href }}">Удалить</a>
+        {% endif %}
         <div style="text-align: center; margin-top: 50px;">
-
             <figure class="sight_caption_redirect">
                 {% for image in images %}
                     <img src="{{ image }}" class="sight7_1redirect">

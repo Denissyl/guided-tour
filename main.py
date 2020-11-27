@@ -111,7 +111,7 @@ def main():
                                    sight=sight, title=sights[sight],
                                    Comment=Comment, session=session, form=form)
         else:
-            return render_template("add_post_page.html", Post=Post, form=form,
+            return render_template("add_post_page.html", title=sight, Post=Post, form=form,
                                    sight=sight, session=session, Comment=Comment)
 
 
@@ -195,6 +195,11 @@ def main():
         if current_user.is_authenticated:
             session = db_session.create_session()
             post = session.query(Post).get(number)
+            comment = session.query(Comment)
+
+            for i in range(session.query(Comment).count()):
+                if comment[i].sight == sight:
+                    session.delete(comment[i])
 
             session.delete(post)
             session.commit()
@@ -234,7 +239,7 @@ def main():
             session.commit()
             return render_template('change_password.html', title="Личный кабинет",
                                    message="Ваш пароль был изменен", form=form)
-        return render_template('change_password.html', title="Личный кабинет", form=form)
+        return render_template('change_password.html', title="Смена пароля", form=form)
 
     @login_manager.user_loader
     def load_user(user_id):

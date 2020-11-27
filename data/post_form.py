@@ -6,5 +6,5 @@ from wtforms.validators import DataRequired, length
 class PostForm(FlaskForm):
     images = TextAreaField('Ссылки на изображения, разделенные знаком "#"', validators=[DataRequired(), length(max=600)])
     sight = StringField('Название', validators=[DataRequired()])
-    description = TextAreaField('Описание', validators=[DataRequired(), length(max=1200)])
+    description = TextAreaField('Описание', validators=[DataRequired(), length(max=2000)])
     submit = SubmitField('Добавить')
