@@ -8,7 +8,7 @@
         {% if sight == post[i].sight %}
         <h5 style="float:left; margin-top: 12px;">Опубликовано пользователем {{ post[i].nickname }} {{ post[i].datetime }}</h5>
         {% set href = "/delete_post/" + post[i].sight + "/" + post[i].id | string %}
-        {% if current_user.nickname == post[i].nickname %}
+        {% if current_user.nickname == post[i].nickname or current_user.role == "admin" %}
             <a style="float:right; margin-top: 7px;" class="btn btn-danger" href="{{ href }}">Удалить</a>
         {% endif %}
         <div style="text-align: center; margin-top: 50px;">

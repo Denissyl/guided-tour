@@ -4,7 +4,7 @@ from flask_login import UserMixin
 from .db_session import SqlAlchemyBase
 
 
-class Feedback(SqlAlchemyBase, UserMixin):
+class Feedback(SqlAlchemyBase):
     __tablename__ = 'feedback'
 
     id = sqlalchemy.Column(sqlalchemy.Integer,

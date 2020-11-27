@@ -4,7 +4,7 @@ from flask_login import UserMixin
 from .db_session import SqlAlchemyBase
 
 
-class Note(SqlAlchemyBase, UserMixin):
+class Note(SqlAlchemyBase):
     __tablename__ = 'note'
 
     id = sqlalchemy.Column(sqlalchemy.Integer,

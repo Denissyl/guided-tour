@@ -4,7 +4,7 @@ from flask_login import UserMixin
 from .db_session import SqlAlchemyBase
 
 
-class Comment(SqlAlchemyBase, UserMixin):
+class Comment(SqlAlchemyBase):
     __tablename__ = 'comment'
 
     id = sqlalchemy.Column(sqlalchemy.Integer,

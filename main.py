@@ -263,7 +263,8 @@ def main():
                 nickname=form.nickname.data,
                 email=form.email.data,
                 datetime=str(datetime.datetime.now(datetime.timezone.utc) +
-                             datetime.timedelta(hours=5, minutes=0))[:19]
+                             datetime.timedelta(hours=5, minutes=0))[:19],
+                role="user"
             )
             user.set_password(form.password.data)
             session.add(user)

@@ -4,7 +4,7 @@ from flask_login import UserMixin
 from .db_session import SqlAlchemyBase
 
 
-class Post(SqlAlchemyBase, UserMixin):
+class Post(SqlAlchemyBase):
     __tablename__ = 'post'
 
     id = sqlalchemy.Column(sqlalchemy.Integer,
