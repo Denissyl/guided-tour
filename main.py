@@ -1,6 +1,5 @@
 import datetime
 import os
-from yandex_translate import YandexTranslate
 
 from flask import render_template, app, Flask, redirect, request
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
