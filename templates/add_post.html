@@ -1,0 +1,43 @@
+{% extends "header_footer.html" %}
+
+{% block content %}
+
+<div>
+    <main role="main" class="container">
+        <h3 style="text-align: center; margin-top: 30px;">Добавление достопримечательности</h3>
+        <form style="margin-top: 30px;" action="" method="post">
+            {{ form.hidden_tag() }}
+            <p>
+                {{ form.images.label }}<br>
+                {{ form.images(class="form-control", type="images") }}<br>
+                {% for error in form.images.errors %}
+                    <p class="alert alert-danger" role="alert">
+                        {{ error }}
+                    </p>
+                {% endfor %}
+            </p>
+            <p>
+                {{ form.sight.label }}<br>
+                {{ form.sight(class="form-control", type="sight") }}<br>
+                {% for error in form.sight.errors %}
+                    <p class="alert alert-danger" role="alert">
+                        {{ error }}
+                    </p>
+                {% endfor %}
+            </p>
+            <p>
+                {{ form.description.label }}<br>
+                {{ form.description(class="form-control", type="description") }}<br>
+                {% for error in form.description.errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+            </p>
+            <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+            {{ message }}
+        </form>
+    </main>
+</div>
+
+{% endblock %}

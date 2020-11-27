@@ -1,7 +1,8 @@
 import datetime
 import os
+from yandex_translate import YandexTranslate
 
-from flask import render_template, app, Flask, redirect
+from flask import render_template, app, Flask, redirect, request
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from flask_mail import Mail, Message
 
@@ -15,6 +16,8 @@ from data.feedbacks import Feedback
 from data.login_form import LoginForm
 from data.note_form import NoteForm
 from data.notes import Note
+from data.post_form import PostForm
+from data.posts import Post
 from data.register import RegisterForm
 from data.users import User
 
@@ -42,24 +45,27 @@ def main():
     def index():
         form = FeedbackForm()
         if form.validate_on_submit():
-            # msg = Message("Feedback", recipients=['denis-syl@yandex.ru'])
-            # msg.body = "You have received a new feedback from."
-            # mail.send(msg)
-            #
-            # print("Data received.")
+            if current_user.is_authenticated:
+                # msg = Message("Feedback", recipients=['denis-syl@yandex.ru'])
+                # msg.body = "You have received a new feedback from."
+                # mail.send(msg)
+                #
+                # print("Data received.")
 
-            feedback = Feedback(
-                description=form.description.data,
-                name=form.name.data,
-                email=form.email.data,
-            )
+                feedback = Feedback(
+                    description=form.description.data,
+                    name=form.name.data,
+                    email=form.email.data,
+                )
 
-            session.add(feedback)
-            session.commit()
+                session.add(feedback)
+                session.commit()
 
-            return render_template('index.html', title="Гид-экскурсия", form=form,
-                                   message="Ваш отзыв был отправлен")
-        return render_template('index.html', title="Гид-экскурсия", form=form)
+                return render_template('index.html', title="Гид-экскурсия", form=form,
+                                       message="Ваш отзыв был отправлен")
+            return redirect("login")
+
+        return render_template('index.html', Post=Post, session=session, title="Гид-экскурсия", form=form)
 
     db_session.global_init("db/guided-tour.sqlite")
 
@@ -97,7 +103,58 @@ def main():
                                sight=sight, title=sights[sight],
                                Comment=Comment, session=session, form=form)
 
+    @app.route('/post/<sight>', methods=['GET', 'POST'])
+    def post(sight):
+        form = CommentForm()
+        if form.validate_on_submit():
+            if current_user.is_authenticated:
+                comment_to_db = Comment(
+                    description=form.description.data,
+                    sight=sight,
+                    nickname=current_user.nickname,
+                    email=current_user.email,
+                    mark=form.mark.data,
+                    datetime=str(datetime.datetime.now(datetime.timezone.utc) +
+                                 datetime.timedelta(hours=5, minutes=0))[:19]
+                )
+
+                session.add(comment_to_db)
+                session.commit()
+
+        post = session.query(Post)
+        for i in range(session.query(Post).count()):
+            images = post[i].images.split("#")
+            print(images)
+            return render_template("add_post_page.html", post=post, i=i, images=images,
+                                   form=form, sight=sight, session=session, Comment=Comment)
+
+    @app.route('/add_post', methods=['GET', 'POST'])
+    @login_required
+    def add_post():
+        form = PostForm()
+        if form.validate_on_submit():
+            session = db_session.create_session()
+            if current_user.is_authenticated:
+                post_to_db = Post(
+                    images=form.images.data,
+                    sight=form.sight.data,
+                    description=form.description.data,
+                    nickname=current_user.nickname,
+                    email=current_user.email,
+                    datetime=str(datetime.datetime.now(datetime.timezone.utc) +
+                                 datetime.timedelta(hours=5, minutes=0))[:19]
+                )
+
+                session.add(post_to_db)
+                session.commit()
+
+                return redirect('/')
+            else:
+                return redirect('/login')
+        return render_template('add_post.html', title="Добавление достопримечательности", form=form)
+
     @app.route('/add_note/<sight>', methods=['GET', 'POST'])
+    @app.route('/add_note/post/<sight>', methods=['GET', 'POST'])
     @login_required
     def add_note(sight):
         form = NoteForm()
@@ -119,11 +176,10 @@ def main():
                 return redirect('/cabinet')
             else:
                 return redirect('/login')
-
-
         return render_template('add_note.html', title="Добавить заметку", form=form)
 
     @app.route('/delete_note/<number>', methods=['GET', 'POST'])
+    @app.route('/delete_note/post/<number>', methods=['GET', 'POST'])
     def delete_note(number):
         if current_user.is_authenticated:
             session = db_session.create_session()
@@ -131,11 +187,13 @@ def main():
 
             session.delete(note)
             session.commit()
+
             return redirect('/cabinet')
         else:
             return redirect('/login')
 
     @app.route('/delete_comment/<sight>/<number>', methods=['GET', 'POST'])
+    @app.route('/delete_comment/post/<number>', methods=['GET', 'POST'])
     def delete_comment(sight, number):
         if current_user.is_authenticated:
             session = db_session.create_session()
@@ -143,10 +201,15 @@ def main():
 
             session.delete(comment)
             session.commit()
-            return redirect('/' + sight)
+
+            sights = ["Ancient_volcano", "Basegi_Nature_Reserve", "Blue_lakes", "Cathedral_square",
+                      "Perm_36", "Usva_pillars", "Vakutin_stone", "Vishera_nature_reserve"]
+            if sight in sights:
+                return redirect('/' + sight)
+            else:
+                return redirect("/post/" + sight)
         else:
             return redirect('/login')
-
 
     @app.route('/cabinet', methods=['GET', 'POST'])
     @login_required

@@ -14,7 +14,11 @@
                 {% set sights = {"Ancient_volcano": "Древний вулкан", "Basegi_Nature_Reserve": "Заповедник Басеги",
                 "Blue_lakes": "Голубые озёра", "Cathedral_square": "Соборная площадь", "Perm_36": "Пермь-36", "Usva_pillars": "Устьвинские столбы",
                 "Vakutin_stone": "Вакутин камень", "Vishera_nature_reserve": "Вишерский заповедник"} %}
+                {% if sights[note_db[i].sight]%}
                 <h5 style="float: left;">{{ sights[note_db[i].sight] }} &#160;</h5>
+                {% else %}
+                <h5 style="float: left;">{{ note_db[i].sight }} &#160;</h5>
+                {% endif %}
                 <p style="float: left;">{{ note_db[i].datetime }}</p>
                     <div style="float: right;">
                         {% set note_id = "/delete_note/" + "/" + note_db[i].id | string %}

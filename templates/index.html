@@ -6,6 +6,10 @@
         <h6 style="text-align: center; margin: 30px 0 30px 0;"><font face="Arial Black">Здесь Вы можете увидеть то, чего нет в других краях</font></h6>
     </div>
     <div>
+        <div>
+            <a style="margin-left: 1095px; margin-bottom: 30px;" class="btn btn-success" href="/add_post">Добавить пост</a>
+        </div>
+
         <main role="main" class="container" >
             {% set sights = "Соборная площадь", "Вишерский заповедник", "Пермь-36",
             "Устьвинские столбы", "Вакутин камень", "Древний вулкан",
@@ -24,6 +28,19 @@
                 <a href="{{ sight_hrefs[i] }}"><figcaption>{{ sights[i] }}</figcaption></a>
                 </figure>
             {% endfor %}
+                {% set post = session.query(Post) %}
+                {% for i in range(session.query(Post).count()) %}
+                    {% if (sights | length + i) % 2 == 0 %}
+                        <figure class="sight_caption">
+                    {% else %}
+                        <figure class="sight_caption" style="margin: 0 0px 50px 0;">
+                    {% endif %}
+                    {% set img = post[i].images.split("#")[0] %}
+                    {% set href = "post/" + post[i].sight %}
+                    <p><img src="{{ img }}" alt="{{ post[i].sight }}" class="sight"></p>
+                    <a href="{{ href }}"><figcaption>{{ post[i].sight }}</figcaption></a>
+                        </figure>
+                {% endfor %}
         </main>
     </div>
 

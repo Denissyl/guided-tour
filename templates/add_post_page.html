@@ -1,0 +1,18 @@
+{% extends "header_footer.html" %}
+
+{% block content %}
+    <div style="text-align: center; margin-top: 50px;">
+        <figure class="sight_caption_redirect">
+            {% for image in images %}
+                <img src="{{ image }}" class="sight7_1redirect">
+            {% endfor %}
+                <h3 style="margin-top: 30px;"><u>{{ post[i].sight }}</u></h3>
+                <main role="main" class="container">
+                    <p style="text-align: left;">{{ post[i].description }}</p>
+                    {% set note_href = "/add_note/" + post[i].sight %}
+                    <a style=" float: right;" class="btn btn-info" href="{{ note_href }}">Добавить в заметки</a>
+                </main>
+        </figure>
+    </div>
+    {% include "comment.html" %}
+{% endblock %}
