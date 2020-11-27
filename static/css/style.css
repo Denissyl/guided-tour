@@ -4,8 +4,8 @@
     height: 400px;
     display: block;
     margin: 0 auto;
-
 }
+
 .img_cont{
     font-family: Arial;
     color: #C1A944;
@@ -19,6 +19,7 @@
     margin: 0 auto;
     padding-top:170px;
 }
+
 .img_cont img{
     position:absolute;
     z-index:-1;
@@ -30,40 +31,37 @@
 {
     width: 512px;
     height: 290px;
-
 }
 
-.sight_caption {
+.sight_caption
+{
     background: #d9dabb;
     display: block;
-
     float: left;
     margin: 0 84px 50px 0;
     text-align: left;
 }
+
 .sight_caption img
 {
     border: 2px solid #8b8e4b;
-
 }
+
 .sight_caption p
 {
     margin-bottom: 0;
-
 }
 
 .sight1_redirect
 {
     width: 452px;
     height: 290px;
-
 }
 
 .sight2_redirect
 {
     width: 212px;
     height: 290px;
-
 }
 
 .sight_caption_redirect
@@ -74,7 +72,8 @@
     text-align: center;
 }
 
-.circle {
+.circle
+{
   float: left;
   width: 45px;
   height: 45px;
