@@ -30,13 +30,12 @@
         <h3 style="text-align: center;">Комментарии</h3>
         {% set comment = session.query(Comment) %}
         {% set user = session.query(User) %}
-
         {% for i in range(session.query(Comment).count()) %}
             {% if comment[i].sight == sight %}
                 <div>
-                    {% for i in range(session.query(User).count()) %}
-                        {% if user[i].nickname == comment[i].nickname %}
-                            <div style="margin-right: 15px; background: {{ user[i].avatar_color }};" class="circle">
+                    {% for j in range(session.query(User).count()) %}
+                        {% if comment[i].nickname == user[j].nickname %}
+                            <div style="margin-right: 15px; background: {{ user[j].avatar_color }};" class="circle">
                                 <h2 style="text-align: center; color: #E6E6FA;"> {{ comment[i].nickname[0].upper() }} </h2>
                             </div>
                         {% endif %}
