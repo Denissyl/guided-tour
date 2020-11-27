@@ -71,12 +71,15 @@ def main():
 
     @app.route('/<sight>', methods=['GET', 'POST'])
     def sights(sight):
+
         sights = {"Ancient_volcano": "Древний вулкан",
                   "Basegi_Nature_Reserve": "Заповедник Басеги",
                   "Blue_lakes": "Голубые озёра", "Cathedral_square": "Соборная площадь",
                   "Perm_36": "Пермь-36", "Usva_pillars": "Устьвинские столбы",
                   "Vakutin_stone": "Вакутин камень",
                   "Vishera_nature_reserve": "Вишерский заповедник"}
+        sights2 = ["Ancient_volcano", "Basegi_Nature_Reserve", "Blue_lakes", "Cathedral_square",
+                  "Perm_36", "Usva_pillars", "Vakutin_stone", "Vishera_nature_reserve"]
         form = CommentForm()
         if form.validate_on_submit():
             if current_user.is_authenticated:
@@ -93,40 +96,22 @@ def main():
                 session.add(comment_to_db)
                 session.commit()
 
-                return render_template(sight + ".html", message="Ваш комментарий был отправлен",
-                                       sight=sight, title=sight,
-                                       Comment=Comment, session=session, form=form)
+                if sight in sights2:
+                    return render_template(sight + ".html", message="Ваш комментарий был отправлен",
+                                           sight=sight, title=sight,
+                                           Comment=Comment, session=session, form=form)
+
             else:
                 return redirect('/login')
 
-        return render_template(sight + ".html",
-                               sight=sight, title=sights[sight],
-                               Comment=Comment, session=session, form=form)
+        if sight in sights2:
+            return render_template(sight + ".html",
+                                   sight=sight, title=sights[sight],
+                                   Comment=Comment, session=session, form=form)
+        else:
+            return render_template("add_post_page.html", Post=Post, form=form,
+                                   sight=sight, session=session, Comment=Comment)
 
-    @app.route('/post/<sight>', methods=['GET', 'POST'])
-    def post(sight):
-        form = CommentForm()
-        if form.validate_on_submit():
-            if current_user.is_authenticated:
-                comment_to_db = Comment(
-                    description=form.description.data,
-                    sight=sight,
-                    nickname=current_user.nickname,
-                    email=current_user.email,
-                    mark=form.mark.data,
-                    datetime=str(datetime.datetime.now(datetime.timezone.utc) +
-                                 datetime.timedelta(hours=5, minutes=0))[:19]
-                )
-
-                session.add(comment_to_db)
-                session.commit()
-
-        post = session.query(Post)
-        for i in range(session.query(Post).count()):
-            images = post[i].images.split("#")
-            print(images)
-            return render_template("add_post_page.html", post=post, i=i, images=images,
-                                   form=form, sight=sight, session=session, Comment=Comment)
 
     @app.route('/add_post', methods=['GET', 'POST'])
     @login_required
@@ -154,7 +139,6 @@ def main():
         return render_template('add_post.html', title="Добавление достопримечательности", form=form)
 
     @app.route('/add_note/<sight>', methods=['GET', 'POST'])
-    @app.route('/add_note/post/<sight>', methods=['GET', 'POST'])
     @login_required
     def add_note(sight):
         form = NoteForm()
@@ -179,7 +163,6 @@ def main():
         return render_template('add_note.html', title="Добавить заметку", form=form)
 
     @app.route('/delete_note/<number>', methods=['GET', 'POST'])
-    @app.route('/delete_note/post/<number>', methods=['GET', 'POST'])
     def delete_note(number):
         if current_user.is_authenticated:
             session = db_session.create_session()
@@ -193,7 +176,6 @@ def main():
             return redirect('/login')
 
     @app.route('/delete_comment/<sight>/<number>', methods=['GET', 'POST'])
-    @app.route('/delete_comment/post/<number>', methods=['GET', 'POST'])
     def delete_comment(sight, number):
         if current_user.is_authenticated:
             session = db_session.create_session()
@@ -202,12 +184,7 @@ def main():
             session.delete(comment)
             session.commit()
 
-            sights = ["Ancient_volcano", "Basegi_Nature_Reserve", "Blue_lakes", "Cathedral_square",
-                      "Perm_36", "Usva_pillars", "Vakutin_stone", "Vishera_nature_reserve"]
-            if sight in sights:
-                return redirect('/' + sight)
-            else:
-                return redirect("/post/" + sight)
+            return redirect("/" + sight)
         else:
             return redirect('/login')
 
