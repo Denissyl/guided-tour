@@ -1,5 +1,6 @@
 import datetime
 import os
+import random
 
 from flask import render_template, app, Flask, redirect, request
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
@@ -264,7 +265,8 @@ def main():
                 email=form.email.data,
                 datetime=str(datetime.datetime.now(datetime.timezone.utc) +
                              datetime.timedelta(hours=5, minutes=0))[:19],
-                role="user"
+                role="user",
+                avatar_color=("#" + "%06x" % random.randint(0, 0xFFFFFF))
             )
             user.set_password(form.password.data)
             session.add(user)

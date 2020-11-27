@@ -15,6 +15,7 @@ class User(SqlAlchemyBase, UserMixin):
     hashed_password = sqlalchemy.Column(sqlalchemy.String)
     datetime = sqlalchemy.Column(sqlalchemy.String)
     role = sqlalchemy.Column(sqlalchemy.String)
+    avatar_color = sqlalchemy.Column(sqlalchemy.String)
 
     def set_password(self, password):
         self.hashed_password = generate_password_hash(password)

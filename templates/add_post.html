@@ -8,7 +8,7 @@
         <form style="margin-top: 30px;" action="" method="post">
             {{ form.hidden_tag() }}
             <p>
-                {{ form.images.label }}<br>
+                {{  form.images.label }}<br>
                 {{ form.images(class="form-control", type="images") }}<br>
                 {% for error in form.images.errors %}
                     <p class="alert alert-danger" role="alert">

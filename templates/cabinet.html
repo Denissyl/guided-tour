@@ -4,10 +4,18 @@
     <div>
         <h3 style="text-align: center; margin-top: 50px;">Личный кабинет</h3>
         <main role="main" class="container">
+            {% if current_user.role == 'user'%}
+                <h5>Роль: пользователь</h5>
+            {% else %}
+                <h5>Роль: администратор</h5>
+            {% endif %}
             <h5>email: {{ current_user.email }}</h5>
             <h5>Имя пользователя: {{ current_user.nickname }}</h5>
             <h5>Аккаунт создан: {{ current_user.datetime }}</h5>
             <h4 style="margin: 70px 0px 0px 0px; ">Смена пароля</h4>
+            <div style="margin-top: 15px; margin-right: 15px; background: {{ current_user.avatar_color }};" class="circle">
+                <h2 style="text-align: center; color: #E6E6FA;"> {{ current_user.nickname[0].upper() }} </h2>
+            </div>
             <a style="margin: 20px 0px 0px 0px;" class="btn btn-info" href="/change_password">Изменить пароль</a>
             <h4 style="margin: 70px 0px 40px 0px; ">Заметки</h4>
             {% set note_db = session.query(Note) %}
