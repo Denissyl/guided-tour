@@ -99,22 +99,21 @@ def main():
                 if sight in sights2:
                     return render_template(sight + ".html", message="Ваш комментарий был отправлен",
                                            sight=sight, title=sight,
-                                           Comment=Comment, session=session, form=form)
+                                           Comment=Comment, session=session, form=form, User=User)
                 else:
                     return render_template("add_post_page.html", message="Ваш комментарий был отправлен",
                                            sight=sight, title=sight,
-                                           Comment=Comment, session=session, form=form, Post=Post)
+                                           Comment=Comment, session=session, form=form, Post=Post, User=User)
             else:
                 return redirect('/login')
 
         if sight in sights2:
             return render_template(sight + ".html",
                                    sight=sight, title=sights[sight],
-                                   Comment=Comment, session=session, form=form)
+                                   Comment=Comment, session=session, form=form, User=User)
         else:
             return render_template("add_post_page.html", title=sight, Post=Post, form=form,
-                                   sight=sight, session=session, Comment=Comment)
-
+                                   sight=sight, session=session, Comment=Comment, User=User)
 
     @app.route('/add_post', methods=['GET', 'POST'])
     @login_required
