@@ -4,8 +4,8 @@
     <div>
         <h3 style="text-align: center; margin-top: 50px;">Личный кабинет</h3>
         <main role="main" class="container">
-            {% if current_user.role == 'user'%}
-                <h5>Роль: пользователь</h5>
+            {% if current_user.role == 'employee'%}
+                <h5>Роль: сотрудник</h5>
             {% else %}
                 <h5>Роль: администратор</h5>
             {% endif %}
