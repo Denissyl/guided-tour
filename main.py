@@ -195,11 +195,9 @@ def main():
         if current_user.is_authenticated:
             session = db_session.create_session()
             post = session.query(Post).get(number)
-            comment = session.query(Comment)
-
-            for i in range(session.query(Comment).count()):
-                if comment[i].sight == sight:
-                    session.delete(comment[i])
+            for i in session.query(Comment):
+                if i.sight == sight:
+                    session.delete(i)
 
             session.delete(post)
             session.commit()
