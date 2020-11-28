@@ -2,7 +2,7 @@ import datetime
 import os
 import random
 
-from flask import render_template, app, Flask, redirect, request
+from flask import render_template, app, Flask, redirect
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from flask_mail import Mail, Message
 
@@ -71,7 +71,6 @@ def main():
 
     @app.route('/<sight>', methods=['GET', 'POST'])
     def sights(sight):
-
         sights = {"Ancient_volcano": "Древний вулкан",
                   "Basegi_Nature_Reserve": "Заповедник Басеги",
                   "Blue_lakes": "Голубые озёра", "Cathedral_square": "Соборная площадь",
@@ -120,7 +119,6 @@ def main():
     def add_post():
         form = PostForm()
         if form.validate_on_submit():
-            session = db_session.create_session()
             if current_user.is_authenticated:
                 post_to_db = Post(
                     images=form.images.data,
@@ -145,7 +143,6 @@ def main():
     def add_note(sight):
         form = NoteForm()
         if form.validate_on_submit():
-            session = db_session.create_session()
             if current_user.is_authenticated:
                 note_to_db = Note(
                     note=form.note.data,
@@ -167,7 +164,6 @@ def main():
     @app.route('/delete_note/<number>', methods=['GET', 'POST'])
     def delete_note(number):
         if current_user.is_authenticated:
-            session = db_session.create_session()
             note = session.query(Note).get(number)
 
             session.delete(note)
@@ -180,7 +176,6 @@ def main():
     @app.route('/delete_comment/<sight>/<number>', methods=['GET', 'POST'])
     def delete_comment(sight, number):
         if current_user.is_authenticated:
-            session = db_session.create_session()
             comment = session.query(Comment).get(number)
 
             session.delete(comment)
@@ -193,7 +188,6 @@ def main():
     @app.route('/delete_post/<sight>/<number>', methods=['GET', 'POST'])
     def delete_post(sight, number):
         if current_user.is_authenticated:
-            session = db_session.create_session()
             post = session.query(Post).get(number)
             for i in session.query(Comment):
                 if i.sight == sight:
@@ -216,7 +210,6 @@ def main():
     def change_password():
         form = ChangePasswordForm()
         if form.validate_on_submit():
-            session = db_session.create_session()
             user = session.query(User).filter(User.nickname == current_user.nickname).first()
             if not user.check_password(form.current_password.data) and (
                     form.new_password.data != form.new_password_again.data):
@@ -241,7 +234,6 @@ def main():
 
     @login_manager.user_loader
     def load_user(user_id):
-        session = db_session.create_session()
         return session.query(User).get(user_id)
 
     @app.route('/register', methods=['GET', 'POST'])
@@ -252,7 +244,6 @@ def main():
                 return render_template('register.html',
                                        form=form,
                                        message="Пароли не совпадают")
-            session = db_session.create_session()
             if session.query(User).filter(User.email == form.email.data).first():
                 return render_template('register.html',
                                        form=form,
@@ -275,7 +266,6 @@ def main():
     def login():
         form = LoginForm()
         if form.validate_on_submit():
-            session = db_session.create_session()
             user = session.query(User).filter(User.email == form.email.data).first()
             if user and user.check_password(form.password.data):
                 login_user(user, remember=form.remember_me.data)
