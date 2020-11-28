@@ -14,7 +14,7 @@
         {% endif %}
         {% if current_user.role == "admin" and post[i].status == "unpublished" %}
             {% set href_publish_post = "publish_post/" + post[i].sight %}
-            <a style="float:right; margin-top: 7px; margin-right: 6px;" class="btn btn-success" href="{{ href_add_post }}">Добавить</a>
+            <a style="float:right; margin-top: 7px; margin-right: 6px;" class="btn btn-success" href="{{ href_publish_post }}">Опубликовать</a>
         {% endif %}
         <div style="text-align: center; margin-top: 50px;">
             <figure class="sight_caption_redirect">
@@ -25,15 +25,9 @@
                     <main role="main" class="container">
                         <p style="text-align: left;">{{ post[i].description }}</p>
                         {% set note_href = "/add_note/" + post[i].sight %}
-                        {% if post[i].status == "published" %}
-                            <a style=" float: right;" class="btn btn-info" href="{{ note_href }}">Добавить в заметки</a>
-                        {% endif %}
                     </main>
             </figure>
         </div>
         {% endif %}
-    {% if post[i].status == "published" %}
-        {% include "comment.html" %}
-    {% endif %}
     {% endfor %}
 {% endblock %}

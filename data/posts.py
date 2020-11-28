@@ -14,3 +14,4 @@ class Post(SqlAlchemyBase):
     nickname = sqlalchemy.Column(sqlalchemy.String)
     email = sqlalchemy.Column(sqlalchemy.String)
     datetime = sqlalchemy.Column(sqlalchemy.String)
+    status = sqlalchemy.Column(sqlalchemy.String)

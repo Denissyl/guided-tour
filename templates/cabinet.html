@@ -16,7 +16,11 @@
             <div style="margin-top: 15px; margin-right: 15px; background: {{ current_user.avatar_color }};" class="circle">
                 <h2 style="text-align: center; color: #E6E6FA;"> {{ current_user.nickname[0].upper() }} </h2>
             </div>
-            <a style="margin: 20px 0px 0px 0px;" class="btn btn-info" href="/change_password">Изменить пароль</a>
+            <a style="margin: 20px 0px 0px 0px;" class="btn btn-warning" href="/change_password">Изменить пароль</a>
+            {% if current_user.role == 'admin'%}
+                <h4 style="margin: 70px 0px 0px 0px; ">Неопубликованные посты</h4>
+                <a style="margin: 20px 0px 0px 0px;" class="btn btn-info" href="/unpublished_posts">Посмотреть посты</a>
+            {% endif %}
             <h4 style="margin: 70px 0px 40px 0px; ">Заметки</h4>
             {% set note_db = session.query(Note) %}
             {% for i in range(session.query(Note).count()) %}

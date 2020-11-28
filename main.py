@@ -127,7 +127,8 @@ def main():
                     nickname=current_user.nickname,
                     email=current_user.email,
                     datetime=str(datetime.datetime.now(datetime.timezone.utc) +
-                                 datetime.timedelta(hours=5, minutes=0))[:19]
+                                 datetime.timedelta(hours=5, minutes=0))[:19],
+                    status="unpublished"
                 )
 
                 session.add(post_to_db)
@@ -137,6 +138,26 @@ def main():
             else:
                 return redirect('/login')
         return render_template('add_post.html', title="Добавление достопримечательности", form=form)
+
+    @app.route('/unpublished_posts/', methods=['GET', 'POST'])
+    @login_required
+    def unpublished_posts():
+        return render_template('unpublished_posts.html', title="Модерация", session=session, Post=Post)
+
+    @app.route('/unpublished_posts/<sight>', methods=['GET', 'POST'])
+    @login_required
+    def unpublished_post(sight):
+        return render_template('unpublished_post.html', title="Модерация", session=session,
+                               Post=Post, sight=sight)
+
+    @app.route('/unpublished_posts/publish_post/<sight>', methods=['GET', 'POST'])
+    @login_required
+    def publish_post(sight):
+        for i in session.query(Post):
+            i.status = "published"
+            session.commit()
+        return redirect("/")
+
 
     @app.route('/add_note/<sight>', methods=['GET', 'POST'])
     @login_required
