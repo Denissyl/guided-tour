@@ -154,8 +154,9 @@ def main():
     @login_required
     def publish_post(sight):
         for i in session.query(Post):
-            i.status = "published"
-            session.commit()
+            if i.sight == sight:
+                i.status = "published"
+                session.commit()
         return redirect("/")
 
 
