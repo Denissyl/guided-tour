@@ -264,7 +264,7 @@ def main():
                 email=form.email.data,
                 datetime=str(datetime.datetime.now(datetime.timezone.utc) +
                              datetime.timedelta(hours=5, minutes=0))[:19],
-                role="user",
+                role="employee",
                 avatar_color=("#" + "%06x" % random.randint(0, 0xFFFFFF))
             )
             user.set_password(form.password.data)
