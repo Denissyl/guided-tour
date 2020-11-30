@@ -1,10 +1,12 @@
 import datetime
 import os
 import random
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 
 from flask import render_template, app, Flask, redirect
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
-from flask_mail import Mail, Message
 
 from data import db_session
 from data.change_password_form import ChangePasswordForm
@@ -30,15 +32,6 @@ login_manager.init_app(app)
 global_init('db/guided-tour.sqlite')
 session = create_session()
 
-mail = Mail(app)
-app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-app.config['MAIL_PORT'] = 587
-app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USE_SSL'] = True
-app.config['MAIL_USERNAME'] = 'permtourcompany@gmail.com'
-app.config['MAIL_DEFAULT_SENDER'] = 'permtourcompany@gmail.com'
-app.config['MAIL_PASSWORD'] = 'p1a2s3s4'
-
 
 def main():
     @app.route('/', methods=['GET', 'POST'])
@@ -46,11 +39,24 @@ def main():
         form = FeedbackForm()
         if form.validate_on_submit():
             if current_user.is_authenticated:
-                # msg = Message("Feedback", recipients=['denis-syl@yandex.ru'])
-                # msg.body = "You have received a new feedback from."
-                # mail.send(msg)
-                #
-                # print("Data received.")
+                msg = MIMEMultipart()
+                message = form.description.data
+                # setup the parameters of the message
+                password = "p1a2s3s4"
+                msg['From'] = "permtourcompany@gmail.com"
+                msg['To'] = "permtourcompany@gmail.com"
+                msg['Subject'] = form.name.data + ' - ' + form.email.data
+                # add in the message body
+                msg.attach(MIMEText(message, 'plain'))
+                # create server
+                server = smtplib.SMTP('smtp.gmail.com: 587')
+                server.starttls()
+                # Login Credentials for sending the mail
+                server.login(msg['From'], password)
+                # send the message via the server.
+                server.sendmail(msg['From'], msg['To'], msg.as_string().encode('utf-8'))
+                server.quit()
+                print("successfully sent email to %s:" % (msg['To']))
 
                 feedback = Feedback(
                     description=form.description.data,
@@ -100,9 +106,10 @@ def main():
                                            sight=sight, title=sight,
                                            Comment=Comment, session=session, form=form, User=User)
                 else:
-                    return render_template("add_post_page.html", message="Ваш комментарий был отправлен",
-                                           sight=sight, title=sight,
-                                           Comment=Comment, session=session, form=form, Post=Post, User=User)
+                    return render_template("add_post_page.html",
+                                           message="Ваш комментарий был отправлен", sight=sight,
+                                           title=sight, Comment=Comment, session=session, form=form,
+                                           Post=Post, User=User)
             else:
                 return redirect('/login')
 
