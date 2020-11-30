@@ -159,7 +159,6 @@ def main():
                 session.commit()
         return redirect("/")
 
-
     @app.route('/add_note/<sight>', methods=['GET', 'POST'])
     @login_required
     def add_note(sight):
