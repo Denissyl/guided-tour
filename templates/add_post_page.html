@@ -32,8 +32,9 @@
             </figure>
         </div>
         {% endif %}
+
     {% endfor %}
-{% if post[i].status == "published" %}
-    {% include "comment.html" %}
-{% endif %}
+
+{% include "comment.html" %}
+
 {% endblock %}

@@ -71,7 +71,8 @@ def main():
                                        message="Ваш отзыв был отправлен", Post=Post, session=session)
             return redirect("login")
 
-        return render_template('index.html', Post=Post, session=session, title="Гид-экскурсия", form=form)
+        return render_template('index.html', Post=Post, session=session, title="Гид-экскурсия",
+                               form=form)
 
     db_session.global_init("db/guided-tour.sqlite")
 
@@ -84,7 +85,7 @@ def main():
                   "Vakutin_stone": "Вакутин камень",
                   "Vishera_nature_reserve": "Вишерский заповедник"}
         sights2 = ["Ancient_volcano", "Basegi_Nature_Reserve", "Blue_lakes", "Cathedral_square",
-                  "Perm_36", "Usva_pillars", "Vakutin_stone", "Vishera_nature_reserve"]
+                   "Perm_36", "Usva_pillars", "Vakutin_stone", "Vishera_nature_reserve"]
         form = CommentForm()
         if form.validate_on_submit():
             if current_user.is_authenticated:
@@ -107,9 +108,10 @@ def main():
                                            Comment=Comment, session=session, form=form, User=User)
                 else:
                     return render_template("add_post_page.html",
-                                           message="Ваш комментарий был отправлен", sight=sight,
-                                           title=sight, Comment=Comment, session=session, form=form,
-                                           Post=Post, User=User)
+                                           message="Ваш комментарий был отправлен",
+                                           sight=sight, title=sight,
+                                           Comment=Comment, session=session, form=form, Post=Post,
+                                           User=User)
             else:
                 return redirect('/login')
 
@@ -149,7 +151,8 @@ def main():
     @app.route('/unpublished_posts/', methods=['GET', 'POST'])
     @login_required
     def unpublished_posts():
-        return render_template('unpublished_posts.html', title="Модерация", session=session, Post=Post)
+        return render_template('unpublished_posts.html', title="Модерация", session=session,
+                               Post=Post)
 
     @app.route('/unpublished_posts/<sight>', methods=['GET', 'POST'])
     @login_required
@@ -231,7 +234,8 @@ def main():
     @app.route('/cabinet', methods=['GET', 'POST'])
     @login_required
     def cabinet():
-        return render_template('cabinet.html', title="Личный кабинет", Note=Note, session=session, User=User)
+        return render_template('cabinet.html', title="Личный кабинет", Note=Note, session=session,
+                               User=User)
 
     @app.route('/change_password', methods=['GET', 'POST'])
     @login_required
